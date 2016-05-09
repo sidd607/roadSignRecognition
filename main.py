@@ -4,7 +4,7 @@ import imutils
 
 print "Done Importing"
 
-frame = cv2.imread("images/stop3.jpeg")
+frame = cv2.imread("images/stop.jpg")
 frame = imutils.resize(frame, width=600)
 
 image = frame
@@ -46,7 +46,15 @@ cv2.imshow('thresh', thresh)
 
 contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 cv2.imshow('image', image)
-cv2.drawContours(image, contours, -1, (0,255,0), 3)
+
+
+for cnt in contours:
+	x, y, w, h = cv2.boundingRect(cnt)
+	aspect_ratio = float(w)/h
+	print aspect_ratio
+	if aspect_ratio < 1.2 and aspect_ratio > 0.7:
+		cv2.drawContours(image, [cnt], -1, (0,255,0), 3)
+
 cv2.imshow('contours', image)
 
 
