@@ -4,7 +4,14 @@ import imutils
 
 print "Done Importing"
 
-frame = cv2.imread("images/stop.jpg")
+frame = cv2.imread("images/triangle1.jpg")
+
+
+#cap = cv2.VideoCapture(0)
+
+#while (True):
+#	_, frame = cap.read()
+
 frame = imutils.resize(frame, width=600)
 
 image = frame
@@ -29,13 +36,13 @@ res = cv2.bitwise_and(frame,frame, mask= mask)
 
 dst = cv2.addWeighted(mask,1,mask2,1,0)
 #dst = cv2.inRange(dst,  , mask=dst)
-cv2.imshow('dst', dst)
+#cv2.imshow('dst', dst)
 
 #--------------------------------------------------------
  
 ret, thresh = cv2.threshold(dst, 127, 255, cv2.THRESH_BINARY)
 
-cv2.imshow('thresh', thresh)
+#cv2.imshow('thresh', thresh)
 
 
 
@@ -45,15 +52,17 @@ cv2.imshow('thresh', thresh)
 #ret, thresh = cv2.threshold(gray, 127, 255, 0)
 
 contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-cv2.imshow('image', image)
+#cv2.imshow('image', image)
 
 
 for cnt in contours:
 	x, y, w, h = cv2.boundingRect(cnt)
 	aspect_ratio = float(w)/h
-	print aspect_ratio
-	if aspect_ratio < 1.2 and aspect_ratio > 0.7:
+	#print aspect_ratio
+	if aspect_ratio < 1.2 and aspect_ratio > 0.7 and cv2.contourArea(cnt) > 700:
+		print cv2.contourArea(cnt)
 		cv2.drawContours(image, [cnt], -1, (0,255,0), 3)
+		#print aspect_ratio
 
 cv2.imshow('contours', image)
 
@@ -63,9 +72,15 @@ cv2.imshow('contours', image)
 
 
 
-cv2.imshow('frame',frame)
-cv2.imshow('mask',mask)
-cv2.imshow('res',res)
-cv2.imshow('hsv', hsv)
+#cv2.imshow('frame',frame)
+#cv2.imshow('mask',mask)
+#cv2.imshow('res',res)
+#cv2.imshow('hsv', hsv)
+
+
+
+#if cv2.waitKey(1) & 0xFF == ord('q'):
+#	break
 cv2.waitKey(0)
+
 cv2.destroyAllWindows()
