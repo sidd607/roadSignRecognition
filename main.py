@@ -61,7 +61,12 @@ for cnt in contours:
 	#print aspect_ratio
 	if aspect_ratio < 1.2 and aspect_ratio > 0.7 and cv2.contourArea(cnt) > 700:
 		print cv2.contourArea(cnt)
-		cv2.drawContours(image, [cnt], -1, (0,255,0), 3)
+		#cv2.drawContours(image, [cnt], -1, (0,255,0), 3)
+		(x,y),radius = cv2.minEnclosingCircle(cnt)
+		center = (int(x),int(y))
+		radius = int(radius)
+		cv2.circle(image,center,radius,(0,255,0),2)
+		print center
 		#print aspect_ratio
 
 cv2.imshow('contours', image)
