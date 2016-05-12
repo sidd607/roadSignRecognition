@@ -16,7 +16,7 @@ def within(cnt, contours):
 			return True
 	return False
 
-frame = cv2.imread("images/stop5.jpg")
+frame = cv2.imread("sunny/P8160029.TIF")
 
 
 #cap = cv2.VideoCapture(0)
@@ -35,7 +35,7 @@ frame = blurred
 
 lowerRed1 = np.array([0, 100, 100])
 upperRed1 = np.array([20, 255, 255])
-lowerRed2 = np.array([159, 100, 100])
+lowerRed2 = np.array([149, 100, 100])
 upperRed2 = np.array([179, 255, 255])
 
 thresholdContour  = np.array([128, 128, 128])
@@ -83,32 +83,32 @@ for cnt in contours:
 	if aspect_ratio < 1.2 and aspect_ratio > 0.7 and cv2.contourArea(cnt) > 700:
 		print cv2.contourArea(cnt)
 		#cv2.drawContours(image, [cnt], -1, (0,255,0), 3)
-		if within(cnt, contours) == False:
-
-			(x,y),radius = cv2.minEnclosingCircle(cnt)
-			center = (int(x),int(y))
-			radius = int(radius)
-			cv2.circle(image,center,radius,(0,255,0),2)
+	
+		(x,y),radius = cv2.minEnclosingCircle(cnt)
+		center = (int(x),int(y))
+		radius = int(radius)
+		
+		
+		if center[0] - radius < 0:
+			x = 0
+		else:
+			x = center[0] - radius
 			
-			if center[0] - radius < 0:
-				x = 0
-			else:
-				x = center[0] - radius
-				
-			if center[1] - radius < 0:
-				y = 0
-			else:
-				y = center[1] - radius
-			print "X: " + str(x)
-			print "Y: " + str(y)		
-			w = 2*radius
-			h = 2*radius
+		if center[1] - radius < 0:
+			y = 0
+		else:
+			y = center[1] - radius
+		print "X: " + str(x)
+		print "Y: " + str(y)		
+		w = 2*radius
+		h = 2*radius
 
-			tmp = image[y:y+h, x:x+w]
-			cv2.imshow(c, tmp)
-			c = c + '1'
-			print center
-			#print aspect_ratio
+		tmp = image[y:y+h, x:x+w]
+		cv2.imshow(c, tmp)
+		cv2.circle(image,center,radius,(0,255,0),2)
+		c = c + '1'
+		print center
+		#print aspect_ratio
 
 cv2.imshow('contours', image)
 
